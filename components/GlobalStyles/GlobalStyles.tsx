@@ -56,15 +56,13 @@ html {
   --color-transparent-black-15: ${COLORS.transparentBlack[15]};
   --color-transparent-black-70: ${COLORS.transparentBlack[70]};
   --color-transparent-black-90: ${COLORS.transparentBlack[90]};
-  --color-offblack: ${COLORS.offblack};
+  --color-black: ${COLORS.black};
   --color-gray-100: ${COLORS.gray[100]};
   --color-gray-300: ${COLORS.gray[300]};
   --color-gray-500: ${COLORS.gray[500]};
   --color-gray-700: ${COLORS.gray[700]};
   --color-gray-900: ${COLORS.gray[900]};
-  --color-primary: ${COLORS.primary};
-  --color-secondary: ${COLORS.secondary};
-  --color-urgent: ${COLORS.urgent};
+  --color-field: ${COLORS.field};
   --font-weight-normal: ${WEIGHTS.normal};
   --font-weight-medium: ${WEIGHTS.medium};
   --font-weight-bold: ${WEIGHTS.bold};
