@@ -15,11 +15,6 @@ const Field: React.FC = () => {
   )
 }
 
-const Wrapper = styled.div`
-  @media ${QUERIES.laptopAndUp} {
-  }
-`
-
 const Pitch = styled.div`
   --space: 16px;
   isolation: isolate;
@@ -28,6 +23,7 @@ const Pitch = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: -1;
   width: 100%;
   height: 100%;
   background: var(--color-field);
