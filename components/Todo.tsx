@@ -7,17 +7,17 @@ interface Props {
 }
 
 gql`
-  query Todo($todoId: ID!) {
-    Todo(todoId: $todoId) {
-      description
-      completed
+  query Player($playerId: ID!) {
+    player(playerId: $playerId) {
+      name
+      photo
     }
   }
 
-  mutation updateTodo($todoId: ID!, $data: UpdateTodoInput!) {
-    updateTodo(todoId: $todoId, data: $data) {
-      description
-      completed
+  mutation updatePlayer($playerId: ID!, $data: PlayerInput!) {
+    updatePlayer(playerId: $playerId, data: $data) {
+      name
+      photo
     }
   }
 `

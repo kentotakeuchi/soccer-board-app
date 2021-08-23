@@ -6,15 +6,15 @@ import Todo from '../components/Todo'
 import { useIndexCreateTodoMutation, useIndexQuery } from '../lib/graphql/types'
 
 gql`
-  query Index {
-    allTodos {
-      todoId
+  query allPlayers {
+    allPlayers {
+      playerId
     }
   }
 
-  mutation IndexCreateTodo($description: String!) {
-    createTodo(description: $description) {
-      todoId
+  mutation createPlayer($data: PlayerInput!) {
+    createPlayer(data: $data) {
+      playerId
     }
   }
 `

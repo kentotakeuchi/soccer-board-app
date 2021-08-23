@@ -19,37 +19,37 @@ export type Scalars = {
 }
 
 export type Mutation = {
-  createTodo: TodoMvc
-  updateTodo?: Maybe<TodoMvc>
+  createPlayer: Player
+  updatePlayer?: Maybe<Player>
 }
 
-export type MutationCreateTodoArgs = {
-  description: Scalars['String']
+export type MutationCreatePlayerArgs = {
+  data: PlayerInput
 }
 
-export type MutationUpdateTodoArgs = {
-  todoId: Scalars['ID']
-  data: UpdateTodoInput
+export type MutationUpdatePlayerArgs = {
+  playerId: Scalars['ID']
+  data: PlayerInput
+}
+
+export type Player = {
+  playerId: Scalars['ID']
+  name: Scalars['String']
+  photo: Scalars['String']
+}
+
+export type PlayerInput = {
+  name?: Maybe<Scalars['String']>
+  photo?: Maybe<Scalars['String']>
 }
 
 export type Query = {
-  allTodos: Array<TodoMvc>
-  Todo?: Maybe<TodoMvc>
+  allPlayers: Array<Player>
+  player?: Maybe<Player>
 }
 
-export type QueryTodoArgs = {
-  todoId: Scalars['ID']
-}
-
-export type TodoMvc = {
-  todoId: Scalars['ID']
-  completed: Scalars['Boolean']
-  description: Scalars['String']
-}
-
-export type UpdateTodoInput = {
-  description?: Maybe<Scalars['String']>
-  completed?: Maybe<Scalars['Boolean']>
+export type QueryPlayerArgs = {
+  playerId: Scalars['ID']
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -137,267 +137,275 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>
-  String: ResolverTypeWrapper<Scalars['String']>
   ID: ResolverTypeWrapper<Scalars['ID']>
+  Player: ResolverTypeWrapper<Player>
+  String: ResolverTypeWrapper<Scalars['String']>
+  PlayerInput: PlayerInput
   Query: ResolverTypeWrapper<{}>
-  TodoMVC: ResolverTypeWrapper<TodoMvc>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
-  UpdateTodoInput: UpdateTodoInput
 }
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Mutation: {}
-  String: Scalars['String']
   ID: Scalars['ID']
+  Player: Player
+  String: Scalars['String']
+  PlayerInput: PlayerInput
   Query: {}
-  TodoMVC: TodoMvc
   Boolean: Scalars['Boolean']
-  UpdateTodoInput: UpdateTodoInput
 }
 
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
-  createTodo?: Resolver<
-    ResolversTypes['TodoMVC'],
+  createPlayer?: Resolver<
+    ResolversTypes['Player'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateTodoArgs, 'description'>
+    RequireFields<MutationCreatePlayerArgs, 'data'>
   >
-  updateTodo?: Resolver<
-    Maybe<ResolversTypes['TodoMVC']>,
+  updatePlayer?: Resolver<
+    Maybe<ResolversTypes['Player']>,
     ParentType,
     ContextType,
-    RequireFields<MutationUpdateTodoArgs, 'todoId' | 'data'>
+    RequireFields<MutationUpdatePlayerArgs, 'playerId' | 'data'>
   >
+}
+
+export type PlayerResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Player'] = ResolversParentTypes['Player']
+> = {
+  playerId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  photo?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
-  allTodos?: Resolver<Array<ResolversTypes['TodoMVC']>, ParentType, ContextType>
-  Todo?: Resolver<
-    Maybe<ResolversTypes['TodoMVC']>,
+  allPlayers?: Resolver<Array<ResolversTypes['Player']>, ParentType, ContextType>
+  player?: Resolver<
+    Maybe<ResolversTypes['Player']>,
     ParentType,
     ContextType,
-    RequireFields<QueryTodoArgs, 'todoId'>
+    RequireFields<QueryPlayerArgs, 'playerId'>
   >
-}
-
-export type TodoMvcResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['TodoMVC'] = ResolversParentTypes['TodoMVC']
-> = {
-  todoId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>
+  Player?: PlayerResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
-  TodoMVC?: TodoMvcResolvers<ContextType>
 }
 
-export type TodoQueryVariables = Exact<{
-  todoId: Scalars['ID']
+export type PlayerQueryVariables = Exact<{
+  playerId: Scalars['ID']
 }>
 
-export type TodoQuery = { Todo?: Maybe<{ description: string; completed: boolean }> }
+export type PlayerQuery = { player?: Maybe<{ name: string; photo: string }> }
 
-export type UpdateTodoMutationVariables = Exact<{
-  todoId: Scalars['ID']
-  data: UpdateTodoInput
+export type UpdatePlayerMutationVariables = Exact<{
+  playerId: Scalars['ID']
+  data: PlayerInput
 }>
 
-export type UpdateTodoMutation = { updateTodo?: Maybe<{ description: string; completed: boolean }> }
+export type UpdatePlayerMutation = { updatePlayer?: Maybe<{ name: string; photo: string }> }
 
-export type IndexQueryVariables = Exact<{ [key: string]: never }>
+export type AllPlayersQueryVariables = Exact<{ [key: string]: never }>
 
-export type IndexQuery = { allTodos: Array<{ todoId: string }> }
+export type AllPlayersQuery = { allPlayers: Array<{ playerId: string }> }
 
-export type IndexCreateTodoMutationVariables = Exact<{
-  description: Scalars['String']
+export type CreatePlayerMutationVariables = Exact<{
+  data: PlayerInput
 }>
 
-export type IndexCreateTodoMutation = { createTodo: { todoId: string } }
+export type CreatePlayerMutation = { createPlayer: { playerId: string } }
 
-export const TodoDocument = gql`
-  query Todo($todoId: ID!) {
-    Todo(todoId: $todoId) {
-      description
-      completed
+export const PlayerDocument = gql`
+  query Player($playerId: ID!) {
+    player(playerId: $playerId) {
+      name
+      photo
     }
   }
 `
 
 /**
- * __useTodoQuery__
+ * __usePlayerQuery__
  *
- * To run a query within a React component, call `useTodoQuery` and pass it any options that fit your needs.
- * When your component renders, `useTodoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `usePlayerQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePlayerQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useTodoQuery({
+ * const { data, loading, error } = usePlayerQuery({
  *   variables: {
- *      todoId: // value for 'todoId'
+ *      playerId: // value for 'playerId'
  *   },
  * });
  */
-export function useTodoQuery(
-  baseOptions: ApolloReactHooks.QueryHookOptions<TodoQuery, TodoQueryVariables>
+export function usePlayerQuery(
+  baseOptions: ApolloReactHooks.QueryHookOptions<PlayerQuery, PlayerQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return ApolloReactHooks.useQuery<TodoQuery, TodoQueryVariables>(TodoDocument, options)
+  return ApolloReactHooks.useQuery<PlayerQuery, PlayerQueryVariables>(PlayerDocument, options)
 }
-export function useTodoLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<TodoQuery, TodoQueryVariables>
+export function usePlayerLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PlayerQuery, PlayerQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return ApolloReactHooks.useLazyQuery<TodoQuery, TodoQueryVariables>(TodoDocument, options)
+  return ApolloReactHooks.useLazyQuery<PlayerQuery, PlayerQueryVariables>(PlayerDocument, options)
 }
-export type TodoQueryHookResult = ReturnType<typeof useTodoQuery>
-export type TodoLazyQueryHookResult = ReturnType<typeof useTodoLazyQuery>
-export type TodoQueryResult = ApolloReactCommon.QueryResult<TodoQuery, TodoQueryVariables>
-export const UpdateTodoDocument = gql`
-  mutation updateTodo($todoId: ID!, $data: UpdateTodoInput!) {
-    updateTodo(todoId: $todoId, data: $data) {
-      description
-      completed
+export type PlayerQueryHookResult = ReturnType<typeof usePlayerQuery>
+export type PlayerLazyQueryHookResult = ReturnType<typeof usePlayerLazyQuery>
+export type PlayerQueryResult = ApolloReactCommon.QueryResult<PlayerQuery, PlayerQueryVariables>
+export const UpdatePlayerDocument = gql`
+  mutation updatePlayer($playerId: ID!, $data: PlayerInput!) {
+    updatePlayer(playerId: $playerId, data: $data) {
+      name
+      photo
     }
   }
 `
-export type UpdateTodoMutationFn = ApolloReactCommon.MutationFunction<
-  UpdateTodoMutation,
-  UpdateTodoMutationVariables
+export type UpdatePlayerMutationFn = ApolloReactCommon.MutationFunction<
+  UpdatePlayerMutation,
+  UpdatePlayerMutationVariables
 >
 
 /**
- * __useUpdateTodoMutation__
+ * __useUpdatePlayerMutation__
  *
- * To run a mutation, you first call `useUpdateTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateTodoMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdatePlayerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePlayerMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateTodoMutation, { data, loading, error }] = useUpdateTodoMutation({
+ * const [updatePlayerMutation, { data, loading, error }] = useUpdatePlayerMutation({
  *   variables: {
- *      todoId: // value for 'todoId'
+ *      playerId: // value for 'playerId'
  *      data: // value for 'data'
  *   },
  * });
  */
-export function useUpdateTodoMutation(
+export function useUpdatePlayerMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    UpdateTodoMutation,
-    UpdateTodoMutationVariables
+    UpdatePlayerMutation,
+    UpdatePlayerMutationVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return ApolloReactHooks.useMutation<UpdateTodoMutation, UpdateTodoMutationVariables>(
-    UpdateTodoDocument,
+  return ApolloReactHooks.useMutation<UpdatePlayerMutation, UpdatePlayerMutationVariables>(
+    UpdatePlayerDocument,
     options
   )
 }
-export type UpdateTodoMutationHookResult = ReturnType<typeof useUpdateTodoMutation>
-export type UpdateTodoMutationResult = ApolloReactCommon.MutationResult<UpdateTodoMutation>
-export type UpdateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  UpdateTodoMutation,
-  UpdateTodoMutationVariables
+export type UpdatePlayerMutationHookResult = ReturnType<typeof useUpdatePlayerMutation>
+export type UpdatePlayerMutationResult = ApolloReactCommon.MutationResult<UpdatePlayerMutation>
+export type UpdatePlayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  UpdatePlayerMutation,
+  UpdatePlayerMutationVariables
 >
-export const IndexDocument = gql`
-  query Index {
-    allTodos {
-      todoId
+export const AllPlayersDocument = gql`
+  query allPlayers {
+    allPlayers {
+      playerId
     }
   }
 `
 
 /**
- * __useIndexQuery__
+ * __useAllPlayersQuery__
  *
- * To run a query within a React component, call `useIndexQuery` and pass it any options that fit your needs.
- * When your component renders, `useIndexQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllPlayersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllPlayersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useIndexQuery({
+ * const { data, loading, error } = useAllPlayersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useIndexQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<IndexQuery, IndexQueryVariables>
+export function useAllPlayersQuery(
+  baseOptions?: ApolloReactHooks.QueryHookOptions<AllPlayersQuery, AllPlayersQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return ApolloReactHooks.useQuery<IndexQuery, IndexQueryVariables>(IndexDocument, options)
+  return ApolloReactHooks.useQuery<AllPlayersQuery, AllPlayersQueryVariables>(
+    AllPlayersDocument,
+    options
+  )
 }
-export function useIndexLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<IndexQuery, IndexQueryVariables>
+export function useAllPlayersLazyQuery(
+  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllPlayersQuery, AllPlayersQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return ApolloReactHooks.useLazyQuery<IndexQuery, IndexQueryVariables>(IndexDocument, options)
+  return ApolloReactHooks.useLazyQuery<AllPlayersQuery, AllPlayersQueryVariables>(
+    AllPlayersDocument,
+    options
+  )
 }
-export type IndexQueryHookResult = ReturnType<typeof useIndexQuery>
-export type IndexLazyQueryHookResult = ReturnType<typeof useIndexLazyQuery>
-export type IndexQueryResult = ApolloReactCommon.QueryResult<IndexQuery, IndexQueryVariables>
-export const IndexCreateTodoDocument = gql`
-  mutation IndexCreateTodo($description: String!) {
-    createTodo(description: $description) {
-      todoId
+export type AllPlayersQueryHookResult = ReturnType<typeof useAllPlayersQuery>
+export type AllPlayersLazyQueryHookResult = ReturnType<typeof useAllPlayersLazyQuery>
+export type AllPlayersQueryResult = ApolloReactCommon.QueryResult<
+  AllPlayersQuery,
+  AllPlayersQueryVariables
+>
+export const CreatePlayerDocument = gql`
+  mutation createPlayer($data: PlayerInput!) {
+    createPlayer(data: $data) {
+      playerId
     }
   }
 `
-export type IndexCreateTodoMutationFn = ApolloReactCommon.MutationFunction<
-  IndexCreateTodoMutation,
-  IndexCreateTodoMutationVariables
+export type CreatePlayerMutationFn = ApolloReactCommon.MutationFunction<
+  CreatePlayerMutation,
+  CreatePlayerMutationVariables
 >
 
 /**
- * __useIndexCreateTodoMutation__
+ * __useCreatePlayerMutation__
  *
- * To run a mutation, you first call `useIndexCreateTodoMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useIndexCreateTodoMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreatePlayerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePlayerMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [indexCreateTodoMutation, { data, loading, error }] = useIndexCreateTodoMutation({
+ * const [createPlayerMutation, { data, loading, error }] = useCreatePlayerMutation({
  *   variables: {
- *      description: // value for 'description'
+ *      data: // value for 'data'
  *   },
  * });
  */
-export function useIndexCreateTodoMutation(
+export function useCreatePlayerMutation(
   baseOptions?: ApolloReactHooks.MutationHookOptions<
-    IndexCreateTodoMutation,
-    IndexCreateTodoMutationVariables
+    CreatePlayerMutation,
+    CreatePlayerMutationVariables
   >
 ) {
   const options = { ...defaultOptions, ...baseOptions }
-  return ApolloReactHooks.useMutation<IndexCreateTodoMutation, IndexCreateTodoMutationVariables>(
-    IndexCreateTodoDocument,
+  return ApolloReactHooks.useMutation<CreatePlayerMutation, CreatePlayerMutationVariables>(
+    CreatePlayerDocument,
     options
   )
 }
-export type IndexCreateTodoMutationHookResult = ReturnType<typeof useIndexCreateTodoMutation>
-export type IndexCreateTodoMutationResult =
-  ApolloReactCommon.MutationResult<IndexCreateTodoMutation>
-export type IndexCreateTodoMutationOptions = ApolloReactCommon.BaseMutationOptions<
-  IndexCreateTodoMutation,
-  IndexCreateTodoMutationVariables
+export type CreatePlayerMutationHookResult = ReturnType<typeof useCreatePlayerMutation>
+export type CreatePlayerMutationResult = ApolloReactCommon.MutationResult<CreatePlayerMutation>
+export type CreatePlayerMutationOptions = ApolloReactCommon.BaseMutationOptions<
+  CreatePlayerMutation,
+  CreatePlayerMutationVariables
 >

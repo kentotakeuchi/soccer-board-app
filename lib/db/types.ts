@@ -12,37 +12,37 @@ export type Scalars = {
 }
 
 export type Mutation = {
-  createTodo: TodoMvc
-  updateTodo?: Maybe<TodoMvc>
+  createPlayer: Player
+  updatePlayer?: Maybe<Player>
 }
 
-export type MutationCreateTodoArgs = {
-  description: Scalars['String']
+export type MutationCreatePlayerArgs = {
+  data: PlayerInput
 }
 
-export type MutationUpdateTodoArgs = {
-  todoId: Scalars['ID']
-  data: UpdateTodoInput
+export type MutationUpdatePlayerArgs = {
+  playerId: Scalars['ID']
+  data: PlayerInput
+}
+
+export type Player = {
+  playerId: Scalars['ID']
+  name: Scalars['String']
+  photo: Scalars['String']
+}
+
+export type PlayerInput = {
+  name?: Maybe<Scalars['String']>
+  photo?: Maybe<Scalars['String']>
 }
 
 export type Query = {
-  allTodos: Array<TodoMvc>
-  Todo?: Maybe<TodoMvc>
+  allPlayers: Array<Player>
+  player?: Maybe<Player>
 }
 
-export type QueryTodoArgs = {
-  todoId: Scalars['ID']
-}
-
-export type TodoMvc = {
-  todoId: Scalars['ID']
-  completed: Scalars['Boolean']
-  description: Scalars['String']
-}
-
-export type UpdateTodoInput = {
-  description?: Maybe<Scalars['String']>
-  completed?: Maybe<Scalars['Boolean']>
+export type QueryPlayerArgs = {
+  playerId: Scalars['ID']
 }
 
 export type AdditionalEntityFields = {
@@ -50,9 +50,9 @@ export type AdditionalEntityFields = {
   type?: Maybe<Scalars['String']>
 }
 
-import { ObjectId } from 'mongodb'
-export type TodoMvcDbObject = {
-  _id: ObjectId
-  completed: boolean
-  description: string
+import { ObjectID } from 'mongodb'
+export type PlayerDbObject = {
+  _id: ObjectID
+  name: string
+  photo: string
 }

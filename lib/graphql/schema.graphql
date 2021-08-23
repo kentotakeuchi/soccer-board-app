@@ -1,20 +1,21 @@
 type Query {
-  allTodos: [TodoMVC!]!
-  Todo(todoId: ID!): TodoMVC
+  allPlayers: [Player!]!
+  player(playerId: ID!): Player
 }
 
 type Mutation {
-  createTodo(description: String!): TodoMVC!
-  updateTodo(todoId: ID!, data: UpdateTodoInput!): TodoMVC
+  createPlayer(data: PlayerInput!): Player!
+  updatePlayer(playerId: ID!, data: PlayerInput!): Player
+  # deletePlayer(playerId: ID!)
 }
 
-input UpdateTodoInput {
-  description: String
-  completed: Boolean
+input PlayerInput {
+  name: String
+  photo: String
 }
 
-type TodoMVC @entity {
-  todoId: ID! @id
-  completed: Boolean! @column
-  description: String! @column
+type Player @entity {
+  playerId: ID! @id
+  name: String! @column
+  photo: String! @column
 }
