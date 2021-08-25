@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client'
 import React, { ChangeEvent } from 'react'
-import { useTodoQuery, useUpdateTodoMutation } from '../lib/graphql/types'
+import { usePlayerQuery, useUpdatePlayerMutation } from '../lib/graphql/types'
 
 interface Props {
-  todoId: string
+  playerId: string
 }
 
 gql`
@@ -22,15 +22,15 @@ gql`
   }
 `
 
-const Todo = (props: Props) => {
-  const { todoId } = props
-  const { loading, data } = useTodoQuery({
+const Player = ({ playerId }: Props) => {
+  const { data, loading } = usePlayerQuery({
     variables: {
-      todoId
+      playerId
     }
   })
   const [localCompleted, setLocalCompleted] = React.useState(false)
-  const [updateTodo] = useUpdateTodoMutation()
+  const [updatePlayerMutation, { data: updatedPlayerData, loading: updating }] =
+    useUpdatePlayerMutation()
   let content = <td colSpan={2}>Loading ...</td>
 
   React.useEffect(() => {
