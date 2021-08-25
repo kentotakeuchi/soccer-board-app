@@ -1,54 +1,57 @@
-import { Resolvers, TodoMvc } from './types'
+import { Resolvers, Player } from './types'
 import { connect } from '../db'
-import { TodoMvcDbObject } from '../db/types'
+import { PlayerDbObject } from '../db/types'
 import { ObjectId } from 'mongodb'
 
 const dbPromise = connect()
 
+// get player's collection
 const getCollection = async () => {
   const db = await dbPromise
-  return db.collection<TodoMvcDbObject>('todos')
+  return db.collection<PlayerDbObject>('player')
 }
 
-const fromDbObject = (dbObject: TodoMvcDbObject): TodoMvc => ({
-  todoId: dbObject._id.toHexString(),
-  completed: dbObject.completed,
-  description: dbObject.description
+// convert db object into graphql object
+const fromDbObject = (dbObject: PlayerDbObject): Player => ({
+  playerId: dbObject._id.toHexString(),
+  name: dbObject.name,
+  photo: dbObject.photo
 })
 
+// implement logic
 const resolvers: Resolvers = {
   Query: {
-    allTodos: async () => {
+    allPlayers: async () => {
       const collection = await getCollection()
       return await collection.find().map(fromDbObject).toArray()
     },
-    Todo: async (_: any, { todoId }) => {
+    player: async (_: any, { playerId }) => {
       const collection = await getCollection()
       const dbObject = await collection.findOne({
-        _id: ObjectId.createFromHexString(todoId)
+        _id: ObjectId.createFromHexString(playerId)
       })
       return fromDbObject(dbObject)
     }
   },
   Mutation: {
-    createTodo: async (_: any, { description }) => {
-      const data: Omit<TodoMvcDbObject, '_id'> = {
-        description,
-        completed: false
+    createPlayer: async (_: any, { data }) => {
+      const playerObject: Omit<PlayerDbObject, '_id'> = {
+        name: data.name || 'name',
+        photo: data.photo
       }
 
       const collection = await getCollection()
-      const document = await collection.insertOne(data)
+      const document = await collection.insertOne(playerObject)
       return fromDbObject({
-        ...data,
+        ...playerObject,
         _id: document.insertedId
       })
     },
-    updateTodo: async (_: any, { todoId, data }) => {
+    updatePlayer: async (_: any, { playerId, data }) => {
       const collection = await getCollection()
       const result = await collection.findOneAndUpdate(
         {
-          _id: ObjectId.createFromHexString(todoId)
+          _id: ObjectId.createFromHexString(playerId)
         },
         { $set: data },
         {
