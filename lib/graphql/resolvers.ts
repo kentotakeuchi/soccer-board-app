@@ -8,7 +8,7 @@ const dbPromise = connect()
 // get player's collection
 const getCollection = async () => {
   const db = await dbPromise
-  return db.collection<PlayerDbObject>('player')
+  return db.collection<PlayerDbObject>('players')
 }
 
 // convert db object into graphql object
@@ -18,7 +18,7 @@ const fromDbObject = (dbObject: PlayerDbObject): Player => ({
   photo: dbObject.photo
 })
 
-// implement logic
+// implement logic like controller in Nodejs
 const resolvers: Resolvers = {
   Query: {
     allPlayers: async () => {

@@ -35,7 +35,7 @@ export type MutationUpdatePlayerArgs = {
 export type Player = {
   playerId: Scalars['ID']
   name: Scalars['String']
-  photo: Scalars['String']
+  photo?: Maybe<Scalars['String']>
 }
 
 export type PlayerInput = {
@@ -50,6 +50,17 @@ export type Query = {
 
 export type QueryPlayerArgs = {
   playerId: Scalars['ID']
+}
+
+export type User = {
+  userId: Scalars['ID']
+  name?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>
+  image?: Maybe<Scalars['String']>
+  emailVerified?: Maybe<Scalars['String']>
+  createdAt?: Maybe<Scalars['String']>
+  updatedAt?: Maybe<Scalars['String']>
+  players: Array<Player>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -142,6 +153,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>
   PlayerInput: PlayerInput
   Query: ResolverTypeWrapper<{}>
+  User: ResolverTypeWrapper<User>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }
 
@@ -153,6 +165,7 @@ export type ResolversParentTypes = {
   String: Scalars['String']
   PlayerInput: PlayerInput
   Query: {}
+  User: User
   Boolean: Scalars['Boolean']
 }
 
@@ -180,7 +193,7 @@ export type PlayerResolvers<
 > = {
   playerId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  photo?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -197,24 +210,40 @@ export type QueryResolvers<
   >
 }
 
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
+> = {
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  emailVerified?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  players?: Resolver<Array<ResolversTypes['Player']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>
   Player?: PlayerResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
+  User?: UserResolvers<ContextType>
 }
 
 export type PlayerQueryVariables = Exact<{
   playerId: Scalars['ID']
 }>
 
-export type PlayerQuery = { player?: Maybe<{ name: string; photo: string }> }
+export type PlayerQuery = { player?: Maybe<{ name: string; photo?: Maybe<string> }> }
 
 export type UpdatePlayerMutationVariables = Exact<{
   playerId: Scalars['ID']
   data: PlayerInput
 }>
 
-export type UpdatePlayerMutation = { updatePlayer?: Maybe<{ name: string; photo: string }> }
+export type UpdatePlayerMutation = { updatePlayer?: Maybe<{ name: string; photo?: Maybe<string> }> }
 
 export type AllPlayersQueryVariables = Exact<{ [key: string]: never }>
 

@@ -28,19 +28,20 @@ export default NextAuth({
     // ...add more providers here
   ],
 
-  // Extend the built-in models
-  adapter: Adapters.TypeORM.Adapter(
-    // The first argument should be a database connection string or TypeORM config object
-    process.env.DATABASE_URL ||
-      `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@cluster0.khcn5.mongodb.net/${process.env.DATABASE_DBNAME}?retryWrites=true&w=majority`,
-    // The second argument can be used to pass custom models and schemas
-    {
-      models: {
-        User: Models.User
-      }
-    }
-  )
+  // todo: insert custom field in user model
+  // // Extend the built-in models
+  // adapter: Adapters.TypeORM.Adapter(
+  //   // The first argument should be a database connection string or TypeORM config object
+  //   process.env.DATABASE_URL ||
+  //     `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@cluster0.khcn5.mongodb.net/${process.env.DATABASE_DBNAME}?retryWrites=true&w=majority`,
+  //   // The second argument can be used to pass custom models and schemas
+  //   {
+  //     models: {
+  //       User: Models.User
+  //     }
+  //   }
+  // )
 
   // A database is optional, but required to persist accounts in a database
-  // database: process.env.DATABASE_URL
+  database: process.env.DATABASE_URL
 })

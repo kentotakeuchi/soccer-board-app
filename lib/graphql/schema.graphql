@@ -17,5 +17,17 @@ input PlayerInput {
 type Player @entity {
   playerId: ID! @id
   name: String! @column
-  photo: String! @column
+  photo: String @column
+}
+
+# todo: add user's logic
+type User @entity {
+  userId: ID! @id
+  name: String @column
+  email: String @column
+  image: String @column
+  emailVerified: String @column
+  createdAt: String @column
+  updatedAt: String @column
+  players: [Player!]!
 }

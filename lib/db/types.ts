@@ -11,6 +11,11 @@ export type Scalars = {
   Float: number
 }
 
+export type AdditionalEntityFields = {
+  path?: Maybe<Scalars['String']>
+  type?: Maybe<Scalars['String']>
+}
+
 export type Mutation = {
   createPlayer: Player
   updatePlayer?: Maybe<Player>
@@ -28,7 +33,7 @@ export type MutationUpdatePlayerArgs = {
 export type Player = {
   playerId: Scalars['ID']
   name: Scalars['String']
-  photo: Scalars['String']
+  photo?: Maybe<Scalars['String']>
 }
 
 export type PlayerInput = {
@@ -45,14 +50,30 @@ export type QueryPlayerArgs = {
   playerId: Scalars['ID']
 }
 
-export type AdditionalEntityFields = {
-  path?: Maybe<Scalars['String']>
-  type?: Maybe<Scalars['String']>
+export type User = {
+  userId: Scalars['ID']
+  name?: Maybe<Scalars['String']>
+  email?: Maybe<Scalars['String']>
+  image?: Maybe<Scalars['String']>
+  emailVerified?: Maybe<Scalars['String']>
+  createdAt?: Maybe<Scalars['String']>
+  updatedAt?: Maybe<Scalars['String']>
+  players: Array<Player>
 }
 
 import { ObjectID } from 'mongodb'
 export type PlayerDbObject = {
   _id: ObjectID
   name: string
-  photo: string
+  photo?: Maybe<string>
+}
+
+export type UserDbObject = {
+  _id: ObjectID
+  name?: Maybe<string>
+  email?: Maybe<string>
+  image?: Maybe<string>
+  emailVerified?: Maybe<string>
+  createdAt?: Maybe<string>
+  updatedAt?: Maybe<string>
 }

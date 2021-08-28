@@ -9,5 +9,9 @@ module.exports = {
     })
 
     return config
+  },
+
+  images: {
+    domains: ['localhost']
   }
 }
