@@ -1,4 +1,6 @@
-module.exports = {
+const withImages = require('next-images')
+
+module.exports = withImages({
   reactStrictMode: true,
 
   // Webpack module bundler used by Next.js doesn’t know how to bundle schema.graphql file; to fix this we can use package webpack-graphql-loader
@@ -12,6 +14,7 @@ module.exports = {
   },
 
   images: {
-    domains: ['localhost']
+    domains: ['localhost'],
+    disableStaticImages: true
   }
-}
+})

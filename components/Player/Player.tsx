@@ -76,7 +76,12 @@ const Player = ({ playerId }: Props) => {
         <label>
           <input type='file' style={{ display: 'none' }} />
           <PlayerWrapper>
-            <Image src={data?.player?.photo || avatarPic} alt='avatar' />
+            <Image
+              src={data?.player?.photo || avatarPic}
+              alt='avatar'
+              width={'48px'}
+              height={'48px'}
+            />
             <figcaption>
               <input type='text' value={localName} onChange={onChangeLocalName}></input>
             </figcaption>
@@ -88,9 +93,6 @@ const Player = ({ playerId }: Props) => {
 }
 
 const PlayerWrapper = styled.figure`
-  width: 48px;
-  height: 48px;
-
   & > div {
     border-radius: 50%;
   }
