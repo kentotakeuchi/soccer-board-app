@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { usePlayerQuery, useUpdatePlayerMutation } from '../../lib/graphql/types'
 import avatarPic from '../../public/images/avatar.jpg'
 import styled from 'styled-components'
+import { motion } from 'framer-motion'
 
 interface Props {
   playerId: string
@@ -71,31 +72,71 @@ const Player = ({ playerId }: Props) => {
   if (loading) return <p>Loading..</p>
 
   return (
-    <>
+    <Wrapper
+      drag
+      layout
+      whileDrag={{
+        scale: 0.95
+      }}
+      // dragConstraints={{ top: 0, right: 0, bottom: -125, left: 0 }}
+      dragElastic={0.5}
+      dragMomentum={true}
+      dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
+      whileTap={{ cursor: 'grabbing' }}
+      style={{ cursor: 'grab' }}
+    >
       <form onSubmit={onSubmitUpdatedName}>
         <label>
-          <input type='file' style={{ display: 'none' }} />
+          {/* <input type='file' style={{ display: 'none' }} /> */}
           <PlayerWrapper>
             <Image
-              src={data?.player?.photo || avatarPic}
+              // src={data?.player?.photo || avatarPic}
+              src={avatarPic}
               alt='avatar'
               width={'48px'}
               height={'48px'}
             />
             <figcaption>
-              <input type='text' value={localName} onChange={onChangeLocalName}></input>
+              <NameInput
+                type='text'
+                value={localName}
+                onChange={onChangeLocalName}
+                size={localName.length}
+              ></NameInput>
             </figcaption>
           </PlayerWrapper>
         </label>
       </form>
-    </>
+    </Wrapper>
   )
 }
 
+const Wrapper = styled(motion.div)`
+  /* cursor: grab; */
+`
+
 const PlayerWrapper = styled.figure`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+
   & > div {
+    width: 48px;
     border-radius: 50%;
   }
+`
+
+const NameInput = styled.input`
+  --space: 4px;
+  width: calc(${props => props.size}ch + var(--space));
+  padding: 4px var(--space);
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-transparent-black-90);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  text-align: center;
 `
 
 export default Player
