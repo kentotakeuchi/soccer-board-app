@@ -22,18 +22,21 @@ gql`
 `
 
 export default function HomePage() {
+  // set draggable area
+  const constraintsRef = React.useRef(null)
+
   const [session, loading] = useSession()
   // console.log({ session })
 
   const { data: allPlayersData, loading: querying, error } = useAllPlayersQuery()
-  console.log({ data: allPlayersData, querying, error })
+  // console.log({ data: allPlayersData, querying, error })
 
   const [newPlayerName, setNewPlayerName] = React.useState('')
   const [newPlayerPhoto, setNewPlayerPhoto] = React.useState('')
   const [playerIds, setPlayerIds] = React.useState<string[]>([])
   const [createPlayerMutation, { data: createdPlayerData, loading: creating }] =
     useCreatePlayerMutation()
-  console.log({ playerIds, createdPlayerData, creating })
+  // console.log({ playerIds, createdPlayerData, creating })
 
   React.useEffect(() => {
     fillPlayerIds(allPlayersData?.allPlayers?.map(t => t.playerId) || [])
@@ -53,7 +56,7 @@ export default function HomePage() {
 
   // trigger by clicking add button
   const onClickAddPlayer = async () => {
-    console.log({ newPlayerName, newPlayerPhoto })
+    // console.log({ newPlayerName, newPlayerPhoto })
     const result = await createPlayerMutation({
       variables: {
         data: { name: newPlayerName, photo: newPlayerPhoto }
@@ -68,7 +71,9 @@ export default function HomePage() {
   if (creating) return <p>Creating..</p>
   if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
 
-  const playerElements = playerIds.map(id => <Player playerId={id} key={id} />)
+  const playerElements = playerIds.map(id => (
+    <Player playerId={id} key={id} constraintsRef={constraintsRef} />
+  ))
 
   return (
     <>
@@ -78,7 +83,7 @@ export default function HomePage() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Field />
+      <Field constraintsRef={constraintsRef} />
 
       {!session && (
         <>

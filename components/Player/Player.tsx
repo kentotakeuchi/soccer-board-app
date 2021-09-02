@@ -2,12 +2,13 @@ import { gql } from '@apollo/client'
 import React, { ChangeEvent, SyntheticEvent } from 'react'
 import Image from 'next/image'
 import { usePlayerQuery, useUpdatePlayerMutation } from '../../lib/graphql/types'
-import avatarPic from '../../public/images/avatar.jpg'
+// import avatarPic from '../../public/images/avatar.jpg'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 
 interface Props {
   playerId: string
+  constraintsRef: React.MutableRefObject<null>
 }
 
 gql`
@@ -26,14 +27,12 @@ gql`
   }
 `
 
-const Player = ({ playerId }: Props) => {
+const Player = ({ playerId, constraintsRef }: Props) => {
   const { data, loading } = usePlayerQuery({
     variables: {
       playerId
     }
   })
-
-  console.log({ data })
 
   const [localName, setLocalName] = React.useState('')
   const [updatePlayerMutation, { data: updatedPlayerData, loading: updating }] =
@@ -75,34 +74,32 @@ const Player = ({ playerId }: Props) => {
     <Wrapper
       drag
       layout
-      whileDrag={{
-        scale: 0.95
-      }}
-      // dragConstraints={{ top: 0, right: 0, bottom: -125, left: 0 }}
+      dragConstraints={constraintsRef}
       dragElastic={0.5}
-      dragMomentum={true}
+      dragMomentum={false} // stop inertia if false
       dragTransition={{ bounceStiffness: 600, bounceDamping: 20 }}
-      whileTap={{ cursor: 'grabbing' }}
-      style={{ cursor: 'grab' }}
+      whileDrag={{ scale: 0.9 }}
+      whileTap={{ cursor: 'grabbing', scale: 0.9 }}
     >
       <form onSubmit={onSubmitUpdatedName}>
         <label>
           {/* <input type='file' style={{ display: 'none' }} /> */}
           <PlayerWrapper>
-            <Image
+            {/* <Image
               // src={data?.player?.photo || avatarPic}
               src={avatarPic}
               alt='avatar'
               width={'48px'}
               height={'48px'}
-            />
+            /> */}
+            <PlayerIcon />
             <figcaption>
               <NameInput
                 type='text'
                 value={localName}
                 onChange={onChangeLocalName}
                 size={localName.length}
-              ></NameInput>
+              />
             </figcaption>
           </PlayerWrapper>
         </label>
@@ -112,31 +109,42 @@ const Player = ({ playerId }: Props) => {
 }
 
 const Wrapper = styled(motion.div)`
-  /* cursor: grab; */
+  cursor: grab;
+  width: max-content;
 `
 
 const PlayerWrapper = styled.figure`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 4px;
   width: max-content;
 
-  & > div {
+  /* & > div {
     width: 48px;
     border-radius: 50%;
-  }
+  } */
+`
+
+const PlayerIcon = styled(motion.div)`
+  width: 36px;
+  height: 36px;
+  background: red;
+  border-radius: 50%;
+  border: 1px solid var(--color-transparent-black-15);
 `
 
 const NameInput = styled.input`
-  --space: 4px;
-  width: calc(${props => props.size}ch + var(--space));
+  --space: 12px;
+  /* width: calc(${props => props.size}ch + calc(var(--space) * 2)); */
   padding: 4px var(--space);
   border: 0;
-  border-radius: 8px;
-  background: var(--color-transparent-black-90);
+  border-radius: 16px;
+  background: var(--color-transparent-black-15);
   font-weight: var(--font-weight-bold);
   color: var(--color-white);
   text-align: center;
+  letter-spacing: 1px;
 `
 
 export default Player

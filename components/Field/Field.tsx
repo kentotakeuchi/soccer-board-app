@@ -1,9 +1,13 @@
 import styled from 'styled-components'
 import { QUERIES } from '../../constants'
 
-const Field: React.FC = () => {
+interface Props {
+  constraintsRef: React.MutableRefObject<null>
+}
+
+const Field: React.FC<Props> = ({ constraintsRef }) => {
   return (
-    <Pitch>
+    <Pitch ref={constraintsRef}>
       <FieldLeft>
         <PenaltyArea></PenaltyArea>
       </FieldLeft>
