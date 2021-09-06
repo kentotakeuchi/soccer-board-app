@@ -3,7 +3,6 @@ import Head from 'next/head'
 import React, { ChangeEvent } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import Field from '../components/Field'
-// import Todo from '../components/Todo'
 import { useAllPlayersQuery, useCreatePlayerMutation } from '../lib/graphql/types'
 import Player from '../components/Player'
 
@@ -26,7 +25,7 @@ export default function HomePage() {
   const constraintsRef = React.useRef(null)
 
   const [session, loading] = useSession()
-  // console.log({ session })
+  console.log({ session })
 
   const { data: allPlayersData, loading: querying, error } = useAllPlayersQuery()
   // console.log({ data: allPlayersData, querying, error })

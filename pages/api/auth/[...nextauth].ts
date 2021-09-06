@@ -54,6 +54,9 @@ export default NextAuth({
     updateAge: 24 * 60 * 60 // 24 hours
   },
 
+  // todo: delete later
+  debug: true,
+
   // todo: insert custom field in user model
   // // Extend the built-in models
   // adapter: Adapters.TypeORM.Adapter(
