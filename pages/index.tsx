@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 import Head from 'next/head'
 import React, { ChangeEvent } from 'react'
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Field from '../components/Field'
 import { useAllPlayersQuery, useCreatePlayerMutation } from '../lib/graphql/types'
 import Player from '../components/Player'
@@ -24,8 +24,8 @@ export default function HomePage() {
   // set draggable area
   const constraintsRef = React.useRef(null)
 
-  const [session, loading] = useSession()
-  console.log({ session })
+  const { data: session, status } = useSession({ required: false })
+  console.log({ session, status })
 
   const { data: allPlayersData, loading: querying, error } = useAllPlayersQuery()
   // console.log({ data: allPlayersData, querying, error })
@@ -65,7 +65,8 @@ export default function HomePage() {
     fillPlayerIds(playerIds.concat(result.data?.createPlayer?.playerId || ''))
   }
 
-  if (loading) return <p>Loading..</p>
+  if (status === 'loading') return <p>Loading session..</p>
+  // if (status === 'authenticated') return <p>authenticated..</p>
   if (querying) return <p>Quering..</p>
   if (creating) return <p>Creating..</p>
   if (error) return <pre>{JSON.stringify(error, null, 2)}</pre>
