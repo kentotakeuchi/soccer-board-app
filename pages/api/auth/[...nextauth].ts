@@ -1,11 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import NextAuth from 'next-auth'
+import NextAuth, { Profile, Session, User } from 'next-auth'
 import EmailProvider from 'next-auth/providers/email'
 import TwitterProvider from 'next-auth/providers/twitter'
 import GithubProvider from 'next-auth/providers/github'
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter'
 import { connect } from '../../../lib/db'
-import Models from '../../../lib/db/models'
 
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, {
@@ -28,7 +27,14 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       }),
       GithubProvider({
         clientId: process.env.NEXTAUTH_GITHUB_CLIENT_ID,
-        clientSecret: process.env.NEXTAUTH_GITHUB_CLIENT_SECRET
+        clientSecret: process.env.NEXTAUTH_GITHUB_CLIENT_SECRET,
+        profile(profile) {
+          // console.log({ profile, tokens })
+          return {
+            ...profile,
+            name: profile.login
+          }
+        }
       })
       // ...add more providers here
     ],
@@ -51,11 +57,23 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     // todo: delete later
     debug: true,
 
-    // todo: insert custom field in user model
-    // Extend the built-in models
     adapter: MongoDBAdapter({
-      // db: (await clientPromise).db(process.env.DATABASE_DBNAME)
       db: await connect()
-    })
+    }),
+
+    callbacks: {
+      async jwt({ token, user, account, profile, isNewUser }) {
+        // console.log({ token, user, account, profile, isNewUser })
+        if (user) {
+          token.uid = user.id
+        }
+        return token
+      },
+      async session({ session, user, token }) {
+        // console.log({ session, user, token })
+        session.id = token.uid
+        return session
+      }
+    }
   })
 }

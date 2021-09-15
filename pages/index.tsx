@@ -13,8 +13,8 @@ gql`
     }
   }
 
-  mutation createPlayer($data: PlayerInput!) {
-    createPlayer(data: $data) {
+  mutation createPlayer($data: PlayerInput!, $userId: ID!) {
+    createPlayer(data: $data, userId: $userId) {
       playerId
     }
   }
@@ -58,7 +58,8 @@ export default function HomePage() {
     // console.log({ newPlayerName, newPlayerPhoto })
     const result = await createPlayerMutation({
       variables: {
-        data: { name: newPlayerName, photo: newPlayerPhoto }
+        data: { name: newPlayerName, photo: newPlayerPhoto },
+        userId: session?.id
       }
     })
 

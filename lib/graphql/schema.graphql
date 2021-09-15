@@ -4,7 +4,7 @@ type Query {
 }
 
 type Mutation {
-  createPlayer(data: PlayerInput!): Player!
+  createPlayer(data: PlayerInput!, userId: ID!): Player!
   updatePlayer(playerId: ID!, data: PlayerInput!): Player
   # deletePlayer(playerId: ID!)
 }
@@ -18,16 +18,17 @@ type Player @entity {
   playerId: ID! @id
   name: String! @column
   photo: String @column
+  userId: ID! @column
 }
 
 # todo: add user's logic
-type User @entity {
-  userId: ID! @id
-  name: String @column
-  email: String @column
-  image: String @column
-  emailVerified: String @column
-  createdAt: String @column
-  updatedAt: String @column
-  players: [Player!]!
-}
+# type User @entity {
+#   userId: ID! @id
+#   name: String @column
+#   email: String @column
+#   image: String @column
+#   emailVerified: String @column
+#   createdAt: String @column
+#   updatedAt: String @column
+#   players: [Player!]!
+# }

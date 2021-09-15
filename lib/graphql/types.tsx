@@ -25,6 +25,7 @@ export type Mutation = {
 
 export type MutationCreatePlayerArgs = {
   data: PlayerInput
+  userId: Scalars['ID']
 }
 
 export type MutationUpdatePlayerArgs = {
@@ -36,6 +37,7 @@ export type Player = {
   playerId: Scalars['ID']
   name: Scalars['String']
   photo?: Maybe<Scalars['String']>
+  userId: Scalars['ID']
 }
 
 export type PlayerInput = {
@@ -50,17 +52,6 @@ export type Query = {
 
 export type QueryPlayerArgs = {
   playerId: Scalars['ID']
-}
-
-export type User = {
-  userId: Scalars['ID']
-  name?: Maybe<Scalars['String']>
-  email?: Maybe<Scalars['String']>
-  image?: Maybe<Scalars['String']>
-  emailVerified?: Maybe<Scalars['String']>
-  createdAt?: Maybe<Scalars['String']>
-  updatedAt?: Maybe<Scalars['String']>
-  players: Array<Player>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -153,7 +144,6 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>
   PlayerInput: PlayerInput
   Query: ResolverTypeWrapper<{}>
-  User: ResolverTypeWrapper<User>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
 }
 
@@ -165,7 +155,6 @@ export type ResolversParentTypes = {
   String: Scalars['String']
   PlayerInput: PlayerInput
   Query: {}
-  User: User
   Boolean: Scalars['Boolean']
 }
 
@@ -177,7 +166,7 @@ export type MutationResolvers<
     ResolversTypes['Player'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreatePlayerArgs, 'data'>
+    RequireFields<MutationCreatePlayerArgs, 'data' | 'userId'>
   >
   updatePlayer?: Resolver<
     Maybe<ResolversTypes['Player']>,
@@ -194,6 +183,7 @@ export type PlayerResolvers<
   playerId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   photo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -210,26 +200,10 @@ export type QueryResolvers<
   >
 }
 
-export type UserResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
-> = {
-  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  emailVerified?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>
-  players?: Resolver<Array<ResolversTypes['Player']>, ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
-}
-
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>
   Player?: PlayerResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
-  User?: UserResolvers<ContextType>
 }
 
 export type PlayerQueryVariables = Exact<{
@@ -251,6 +225,7 @@ export type AllPlayersQuery = { allPlayers: Array<{ playerId: string }> }
 
 export type CreatePlayerMutationVariables = Exact<{
   data: PlayerInput
+  userId: Scalars['ID']
 }>
 
 export type CreatePlayerMutation = { createPlayer: { playerId: string } }
@@ -392,8 +367,8 @@ export type AllPlayersQueryResult = ApolloReactCommon.QueryResult<
   AllPlayersQueryVariables
 >
 export const CreatePlayerDocument = gql`
-  mutation createPlayer($data: PlayerInput!) {
-    createPlayer(data: $data) {
+  mutation createPlayer($data: PlayerInput!, $userId: ID!) {
+    createPlayer(data: $data, userId: $userId) {
       playerId
     }
   }
@@ -417,6 +392,7 @@ export type CreatePlayerMutationFn = ApolloReactCommon.MutationFunction<
  * const [createPlayerMutation, { data, loading, error }] = useCreatePlayerMutation({
  *   variables: {
  *      data: // value for 'data'
+ *      userId: // value for 'userId'
  *   },
  * });
  */

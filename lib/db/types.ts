@@ -23,6 +23,7 @@ export type Mutation = {
 
 export type MutationCreatePlayerArgs = {
   data: PlayerInput
+  userId: Scalars['ID']
 }
 
 export type MutationUpdatePlayerArgs = {
@@ -34,6 +35,7 @@ export type Player = {
   playerId: Scalars['ID']
   name: Scalars['String']
   photo?: Maybe<Scalars['String']>
+  userId: Scalars['ID']
 }
 
 export type PlayerInput = {
@@ -50,30 +52,10 @@ export type QueryPlayerArgs = {
   playerId: Scalars['ID']
 }
 
-export type User = {
-  userId: Scalars['ID']
-  name?: Maybe<Scalars['String']>
-  email?: Maybe<Scalars['String']>
-  image?: Maybe<Scalars['String']>
-  emailVerified?: Maybe<Scalars['String']>
-  createdAt?: Maybe<Scalars['String']>
-  updatedAt?: Maybe<Scalars['String']>
-  players: Array<Player>
-}
-
 import { ObjectID } from 'mongodb'
 export type PlayerDbObject = {
   _id: ObjectID
   name: string
   photo?: Maybe<string>
-}
-
-export type UserDbObject = {
-  _id: ObjectID
-  name?: Maybe<string>
-  email?: Maybe<string>
-  image?: Maybe<string>
-  emailVerified?: Maybe<string>
-  createdAt?: Maybe<string>
-  updatedAt?: Maybe<string>
+  userId: string
 }
