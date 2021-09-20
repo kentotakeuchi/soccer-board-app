@@ -7,8 +7,8 @@ import { useAllPlayersQuery, useCreatePlayerMutation } from '../lib/graphql/type
 import Player from '../components/Player'
 
 gql`
-  query allPlayers {
-    allPlayers {
+  query allPlayers($userId: ID) {
+    allPlayers(userId: $userId) {
       playerId
     }
   }
@@ -27,7 +27,7 @@ export default function HomePage() {
   const { data: session, status } = useSession({ required: false })
   console.log({ session, status })
 
-  const { data: allPlayersData, loading: querying, error } = useAllPlayersQuery()
+  const { data: allPlayersData, loading: querying, error } = useAllPlayersQuery(session.id)
   // console.log({ data: allPlayersData, querying, error })
 
   const [newPlayerName, setNewPlayerName] = React.useState('')
@@ -59,7 +59,7 @@ export default function HomePage() {
     const result = await createPlayerMutation({
       variables: {
         data: { name: newPlayerName, photo: newPlayerPhoto },
-        userId: session?.id
+        userId: `${session?.id}`
       }
     })
 
